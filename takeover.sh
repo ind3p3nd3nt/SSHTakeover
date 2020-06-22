@@ -3,7 +3,7 @@ echo 'Flushing iptables'
 sudo iptables -F INPUT;
 sudo iptables -P INPUT ACCEPT;
 echo Adding new admin account...;
-random_number=$(((RANDOM %10)+1));
+random_number=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1);
 random_user=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 6 | head -n 1);
 sudo useradd $random_user;
 echo $random_user:$random_number | sudo chpasswd;
