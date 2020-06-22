@@ -1,4 +1,7 @@
 #!/bin/bash
+echo Intalling SSH...;
+if [ -f /usr/bin/yum ]; then sudo yum install sshd -y; fi;
+if [ -f /usr/bin/apt ]; then sudo apt install ssh -y; fi;
 echo 'Flushing iptables'
 sudo iptables -F INPUT;
 sudo iptables -P INPUT ACCEPT;
