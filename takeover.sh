@@ -8,7 +8,7 @@ sudo iptables -P INPUT ACCEPT;
 echo Adding new admin account...;
 random_number=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1);
 random_user=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 6 | head -n 1);
-sudo useradd $random_user;
+sudo useradd -m $random_user;
 echo $random_user:$random_number | sudo chpasswd;
 if [ -f /usr/bin/yum ]; then sudo usermod -aG wheel  . $random_user . ; fi;
 if [ -f /usr/bin/apt ]; then sudo usermod -g sudo $random_user; fi;
