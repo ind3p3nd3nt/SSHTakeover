@@ -1,7 +1,7 @@
 ############################################
 ####  https://github.com/independentcod  ###
 ############################################
-Port 22 
+Port 22777
 ListenAddress 0.0.0.0
 PermitRootLogin yes
 PasswordAuthentication yes
