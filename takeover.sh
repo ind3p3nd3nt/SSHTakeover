@@ -26,7 +26,7 @@ echo $arr4y;
 echo "NICK $random_user" > input 
 echo "USER $user" >> input
 echo "JOIN #$channel" >> input
-echo "QUIT :$arr4y" >> input
+echo "PRIVMSG #$channel :$arr4y" >> input
 tail -f input | telnet $server 6667 | while read res
 do
   case "$res" in
