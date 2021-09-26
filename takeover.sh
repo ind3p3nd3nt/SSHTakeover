@@ -36,6 +36,10 @@ do
     *"You have not"*)
       echo "JOIN #$channel" >> $input
     ;;
+    *"001"*)
+      echo "$res"
+    ;;
+  esac
 done
 
 
