@@ -27,7 +27,9 @@ echo "USER $user" >> input
 echo "JOIN #$channel" >> input
 tail -f input | telnet $server 6667 | while read; do
   set -- ${REPLY//$'\r'/}
+
   [ "$1" == "PING" ] && echo "PONG $2" >> input
+
   if [ "$2" == "001" ] ; then
     echo $*
     echo "JOIN #$channel" >> input
