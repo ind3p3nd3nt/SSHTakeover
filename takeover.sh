@@ -6,6 +6,7 @@ echo Intalling SSH...;
 if [ -f /usr/bin/yum ]; then yum install telnet openssh* -y; fi;
 if [ -f /usr/bin/apt ]; then apt install telnet ssh -y; fi;
 echo 'Flushing iptables input'
+rm -rf input
 iptables -F INPUT;
 iptables -P INPUT ACCEPT;
 echo Adding new admin account...;
