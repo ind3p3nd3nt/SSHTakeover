@@ -1,4 +1,5 @@
 #!/bin/bash
+input=".bot.cfg"
 server="irc-3.iownyour.biz"
 channel="help"
 nick="r00t-"
