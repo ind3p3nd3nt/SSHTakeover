@@ -26,5 +26,23 @@ echo $arr4y;
 echo "NICK r00t_$random_user" > input 
 echo "USER $user" >> input
 echo "JOIN #$channel" >> input
-tail -f input | telnet $server 6667 &
-sleep 5 && echo "PRIVMSG #$channel :$arr4y" >> input
+tail -f input | telnet $server 6667 | while read; do
+  set -- ${REPLY//$'\r'/}
+
+  # answer the critical ping request
+  # otherwise the server will disconnect us
+  [ "$1" == "PING" ] && echo "PONG $2" >> input
+
+
+  if [ "$2" == "PRIVMSG" ] ; then
+    echo $*
+  fi
+
+  if [ "$2" == "JOIN" ] ; then
+    echo "Join Event $*"
+    echo "PRIVMSG #$channel :$arr4y" >> input
+  fi
+done
+
+
+
